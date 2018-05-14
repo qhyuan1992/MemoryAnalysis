@@ -125,7 +125,7 @@ public final class HahaHelper {
     return value instanceof ArrayInstance && ((ArrayInstance) value).getArrayType() == Type.BYTE;
   }
 
-  static List<ClassInstance.FieldValue> classInstanceValues(Instance instance) {
+  public static List<ClassInstance.FieldValue> classInstanceValues(Instance instance) {
     ClassInstance classInstance = (ClassInstance) instance;
     return classInstance.getValues();
   }

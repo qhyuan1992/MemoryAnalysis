@@ -2,10 +2,12 @@ package com.memory.analysis.utils;
 
 import com.squareup.haha.perflib.Instance;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 保存RetainedSize最大的前50个对象实例
+ */
 public class StableList {
     private static final int MAX_NUM = 50;
     private List<Instance> list = new LinkedList<>();
@@ -15,18 +17,7 @@ public class StableList {
             list.remove(list.size() - 1);
         }
         list.add(e);
-        list.sort(new Comparator<Instance>() {
-            @Override
-            public int compare(Instance i1, Instance i2) {
-                if (i1.getTotalRetainedSize() > i2.getTotalRetainedSize()) {
-                    return -1;
-                } else if (i1.getTotalRetainedSize() < i2.getTotalRetainedSize()) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
+        list.sort((i1, i2) -> Long.compare(i2.getTotalRetainedSize(), i1.getTotalRetainedSize()));
     }
 
     public int size() {
