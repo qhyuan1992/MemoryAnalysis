@@ -2,6 +2,8 @@ package com.memory.analysis;
 
 import com.memory.analysis.leak.AnalysisResult;
 import com.memory.analysis.leak.HeapAnalyzer;
+import com.memory.analysis.utils.StableList;
+import com.squareup.haha.perflib.ClassInstance;
 import com.squareup.haha.perflib.HprofParser;
 import com.squareup.haha.perflib.Instance;
 import com.squareup.haha.perflib.Snapshot;
@@ -10,6 +12,7 @@ import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,6 +24,8 @@ public class Test {
         final HprofBuffer buffer = new MemoryMappedFileBuffer(hprofFile);
         final HprofParser parser = new HprofParser(buffer);
         final Snapshot snapshot = parser.parse();
+        snapshot.computeDominators();
+
 //        snapshot.dumpInstanceCounts();
 //        snapshot.dumpSizes();
 //        snapshot.getGCRoots();
@@ -61,10 +66,33 @@ public class Test {
          */
 
         // 0x13539d60    0x1315bf10
-        Instance i = snapshot.findInstance(0x1315bf10);//0x1315bf10
+        /*Instance i = snapshot.findInstance(0x1315bf10);//0x1315bf10
         HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
         AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, i);
         System.out.println(result.className + "leak " + result.retainedHeapSize /1024.0/1024.0 + "M");
-        System.out.println(result.leakTrace.toString());
+        System.out.println(result.leakTrace.toString());*/
+
+
+        HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
+        StableList list = getAllInstance(snapshot);
+        for (int i = 0; i < list.size(); i++) {
+            Instance instance = list.get(i);
+            System.out.println("------>" + instance);
+            if (instance instanceof ClassInstance) {
+                AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, instance);
+                System.out.println(result.className + " leak " + result.retainedHeapSize /1024.0/1024.0 + "M");
+                System.out.println(result.leakTrace.toString());
+            }
+        }
+
+    }
+
+    private static StableList getAllInstance(Snapshot snapshot) {
+        StableList list = new StableList();
+        List<Instance> instanceList = snapshot.getReachableInstances();
+        for (Instance instance : instanceList) {
+            list.add(instance);
+        }
+        return list;
     }
 }
