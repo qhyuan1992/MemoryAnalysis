@@ -4,6 +4,7 @@ import com.memory.analysis.leak.AnalysisResult;
 import com.memory.analysis.leak.HeapAnalyzer;
 import com.memory.analysis.process.ImageUtil;
 import com.memory.analysis.utils.ByteUtil;
+import com.memory.analysis.utils.Constants;
 import com.memory.analysis.utils.StableList;
 import com.squareup.haha.perflib.*;
 import com.squareup.haha.perflib.io.HprofBuffer;
@@ -11,6 +12,8 @@ import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.memory.analysis.process.ImageUtil.ANDROID_BITMAP_CLASS;
@@ -18,7 +21,8 @@ import static com.memory.analysis.process.ImageUtil.ANDROID_BITMAP_CLASS;
 /**
  * Created by weiersyuan on 2018/5/12.
  */
-public class Test {
+public class Main {
+    public static long totalRetainedSize;
 
     public static void main(String [] args) throws IOException {
         final File hprofFile = new File("/Users/weiersyuan/Desktop/test2.hprof");
@@ -33,22 +37,29 @@ public class Test {
             Instance instance = list.get(i);
             if (instance instanceof ClassInstance) {
                 AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, instance);
-                System.out.println(result.className + " leak " + ByteUtil.formatByteSize(result.retainedHeapSize));
+                System.out.println(result.className + " leak " + ByteUtil.formatByteSize(result.retainedHeapSize) + "ration:" + 100 *(result.retainedHeapSize*1.0 / totalRetainedSize) + "%");
                 if (result.leakFound) {
                     System.out.println(result.leakTrace.toString());
                 }
 
                 final ClassObj classObj = instance.getClassObj();
-                System.out.println(classObj.getClassName());
                 if (ANDROID_BITMAP_CLASS.equals(classObj.getClassName())) {
                     ImageUtil.getImage((ClassInstance) instance);
                 }
             } else if (instance instanceof ArrayInstance) {
                 AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, instance);
                 if (result.leakFound) {
-                    System.out.println(result.leakTrace.toString());
+                    //System.out.println(result.leakTrace.toString());
                 }
             }
+        }
+    }
+
+    private static void findMayActivityLeak(Snapshot snapshot) {
+        ClassObj activityClassObj = snapshot.findClass(Constants.ANDROID_BACTIVITY_CLASS);
+
+        for (Instance instance : activityClassObj.getInstancesList()) {
+            System.out.println(instance.getClassObj().getClassName());
         }
     }
 
@@ -56,6 +67,7 @@ public class Test {
         StableList list = new StableList();
         List<Instance> instanceList = snapshot.getReachableInstances();
         for (Instance instance : instanceList) {
+            totalRetainedSize += instance.getSize();
             list.add(instance);
         }
         return list;
