@@ -6,7 +6,6 @@ import com.memory.analysis.process.ClassObjWrapper;
 import com.memory.analysis.process.InstanceAnalysis;
 import com.memory.analysis.process.InstanceWrapper;
 import com.memory.analysis.utils.Constants;
-import com.memory.analysis.utils.FormatUtil;
 import com.memory.analysis.utils.StableList;
 import com.squareup.haha.perflib.ClassObj;
 import com.squareup.haha.perflib.HprofParser;
@@ -23,12 +22,27 @@ import java.io.IOException;
  * Created by weiersyuan on 2018/5/12.
  */
 public class Main {
-    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/test2.hprof";  // /Users/weiersyuan/Desktop/123/dump_LowMemory.hprof
-    public static final String instanceOutFilePath = "/Users/weiersyuan/Desktop/out/instance.txt";
-    public static final String classOutFilePath = "/Users/weiersyuan/Desktop/out/class.txt";
+    public static final String hprofFilePath = "src/main/resources/test2.hprof";
+    public static final String instanceOutFilePath = "src/main/resources/instance.txt";
+    public static final String classOutFilePath = "src/main/resources/class.txt";
+    public static String dirPath = "src/main/resources/";
 
     public static void main(String [] args) throws IOException {
-        final File hprofFile = new File(hprofFilePath);
+        /**
+         * 遍历当前目录下的所有hprof文件
+         */
+        File file = new File(dirPath);
+        File[] array = file.listFiles();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].isFile() && array[i].getName().endsWith("hprof")) {
+                File hprofFile = new File(dirPath + array[i].getName());
+                handleHprof(hprofFile);
+            }
+        }
+    }
+    
+    private static void handleHprof(File hprofFile) throws IOException {
+        System.out.println("handle file " + hprofFile.getPath());
         final HprofBuffer buffer = new MemoryMappedFileBuffer(hprofFile);
         final HprofParser parser = new HprofParser(buffer);
         final Snapshot snapshot = parser.parse();
@@ -36,12 +50,13 @@ public class Main {
         HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
 
         // 分析所有的实例
-        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath));
+        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath,hprofFile.getName()));
         // 分析所有的类
         Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath));
 
         instanceThread.start();
         classThread.start();
+        
     }
 
     private static void findMayActivityLeak(Snapshot snapshot) {
@@ -56,16 +71,18 @@ public class Main {
         Snapshot snapshot;
         HeapAnalyzer heapAnalyzer;
         File file;
+        String hprofFileName;
 
-        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName) {
+        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName , String hprofFileName) {
             this.snapshot = snapshot;
             this.heapAnalyzer = heapAnalyzer;
             this.file = new File(pathName);
+            this.hprofFileName = hprofFileName;
         }
 
         @Override
         public void run() {
-            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer);
+            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer,hprofFileName);
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
             try {
                 FileUtils.writeLines(file, topInstanceList.list, true);
