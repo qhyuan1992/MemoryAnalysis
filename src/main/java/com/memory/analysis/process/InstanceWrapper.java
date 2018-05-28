@@ -46,7 +46,7 @@ public class InstanceWrapper implements SortableObject, Comparable{
         InstanceWrapper that = (InstanceWrapper) o;
 
         // 相差5K以上认为是不同的对象
-        if (Math.abs(retainedHeapSize - that.retainedHeapSize) > 5000) return false;
+        if (Math.abs(retainedHeapSize - that.retainedHeapSize) > 10) return false;
         return classObj != null ? realEqual(classObj.getClassName(), that.classObj.getClassName()) : that.classObj == null;
     }
 
