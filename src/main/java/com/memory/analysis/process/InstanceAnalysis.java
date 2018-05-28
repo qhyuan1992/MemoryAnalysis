@@ -28,16 +28,11 @@ public class InstanceAnalysis {
         for (InstanceWrapper instanceWrapper: topInstanceList) {
             AnalysisResult analysisResult = heapAnalyzer.findLeakTrace(0, snapshot, instanceWrapper.instance);
             if (analysisResult != null) {
-                instanceWrapper.referenceChain = analysisResult;
-                instanceWrapper.found = analysisResult.leakFound;
-                instanceWrapper.classObj = instanceWrapper.instance.getClassObj();
-                instanceWrapper.leakTrace = analysisResult.leakTrace;
-                instanceWrapper.retainedHeapSize = analysisResult.retainedHeapSize;
-                instanceWrapper.sizeRation = analysisResult.retainedHeapSize*1.0/totalRetainedSize;
-                instanceWrapper.id = instanceWrapper.instance.getId();
+                instanceWrapper.fill(analysisResult, totalRetainedSize);
             }
         }
     }
+
 
     public StableList<InstanceWrapper> getTopInstanceList() {
         return topInstanceList;

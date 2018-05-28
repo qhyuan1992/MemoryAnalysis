@@ -30,6 +30,16 @@ public class InstanceWrapper implements SortableObject, Comparable{
         this.instance = instance;
     }
 
+    public void fill(AnalysisResult analysisResult, long totalRetainedSize) {
+        this.referenceChain = analysisResult;
+        this.found = analysisResult.leakFound;
+        this.classObj = instance.getClassObj();
+        this.leakTrace = analysisResult.leakTrace;
+        this.retainedHeapSize = analysisResult.retainedHeapSize;
+        this.sizeRation = analysisResult.retainedHeapSize*1.0/totalRetainedSize;
+        this.id = instance.getId();
+    }
+
     @Override
     public long getSize() {
         return retainedHeapSize;

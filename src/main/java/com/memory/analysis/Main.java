@@ -24,9 +24,10 @@ import java.io.IOException;
 public class Main {
     // /Users/weiersyuan/Desktop/test2.hprof
     // /Users/weiersyuan/Desktop/123/dump_LowMemory.hprof
-    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/test/test2.hprof";
+    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/123/dump_LowMemory.hprof";
     public static final String instanceOutFilePath = "/Users/weiersyuan/Desktop/test/out/instance.txt";
     public static final String classOutFilePath = "/Users/weiersyuan/Desktop/test/out/class.txt";
+    public static final String activityOutFilePath = "/Users/weiersyuan/Desktop/test/out/avtivity.txt";
 
     public static void main(String [] args) throws IOException {
         final File hprofFile = new File(hprofFilePath);
@@ -39,7 +40,7 @@ public class Main {
         // 分析所有的实例
         Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath));
         // 分析所有的类
-        Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath));
+        Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath, activityOutFilePath));
 
         instanceThread.start();
         classThread.start();
@@ -80,22 +81,28 @@ public class Main {
         Snapshot snapshot;
         HeapAnalyzer heapAnalyzer;
         File file;
+        File activityClassOutFile;
 
-        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath) {
+        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath, String activityClassOutFilePath) {
             this.snapshot = snapshot;
             this.heapAnalyzer = heapAnalyzer;
             this.file = new File(classOutFilePath);
+            this.activityClassOutFile = new File(activityClassOutFilePath);
         }
 
         @Override
         public void run() {
             ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, heapAnalyzer);
             StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
+            StableList<ClassObjWrapper> topActivityClassList = classAnalysis.getTopActivityClassList();
+
             try {
                 FileUtils.writeLines(file, topClassList);
+                FileUtils.writeLines(activityClassOutFile, topActivityClassList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
