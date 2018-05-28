@@ -201,7 +201,12 @@ public final class HeapAnalyzer {
 
     LeakTrace leakTrace = buildLeakTrace(result.leakingNode);
 
-    String className = leakingRef.getClassObj().getClassName();
+    ClassObj classObj = leakingRef.getClassObj();
+    if (classObj == null) {
+      return null;
+    }
+
+    String className = classObj.getClassName();
 
     // Side effect: computes retained size.
     snapshot.computeDominators();

@@ -1,6 +1,8 @@
 package com.memory.analysis.utils;
 
-public class ByteUtil {
+import java.text.NumberFormat;
+
+public class FormatUtil {
     public static final int KB = 1024;
     public static final int MB = 1024 * KB;
 
@@ -20,4 +22,17 @@ public class ByteUtil {
             return String.format("%d B",size);
         }
     }
+
+    /**
+     * 将double类型数据转换为百分比格式，并保留小数点前IntegerDigits位和小数点后FractionDigits位
+     */
+    public static String formatPercent(double d){
+        int FractionDigits = 2;
+        NumberFormat nf = java.text.NumberFormat.getPercentInstance();
+//        nf.setMaximumIntegerDigits(IntegerDigits);//小数点前保留几位
+        nf.setMinimumFractionDigits(FractionDigits);// 小数点后保留几位
+        String str = nf.format(d);
+        return str;
+    }
+
 }

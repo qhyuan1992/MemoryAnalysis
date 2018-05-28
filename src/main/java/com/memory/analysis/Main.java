@@ -1,58 +1,47 @@
 package com.memory.analysis;
 
-import com.memory.analysis.leak.AnalysisResult;
 import com.memory.analysis.leak.HeapAnalyzer;
-import com.memory.analysis.process.ImageUtil;
-import com.memory.analysis.utils.ByteUtil;
+import com.memory.analysis.process.ClassAnalysis;
+import com.memory.analysis.process.ClassObjWrapper;
+import com.memory.analysis.process.InstanceAnalysis;
+import com.memory.analysis.process.InstanceWrapper;
 import com.memory.analysis.utils.Constants;
+import com.memory.analysis.utils.FormatUtil;
 import com.memory.analysis.utils.StableList;
-import com.squareup.haha.perflib.*;
+import com.squareup.haha.perflib.ClassObj;
+import com.squareup.haha.perflib.HprofParser;
+import com.squareup.haha.perflib.Instance;
+import com.squareup.haha.perflib.Snapshot;
 import com.squareup.haha.perflib.io.HprofBuffer;
 import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static com.memory.analysis.process.ImageUtil.ANDROID_BITMAP_CLASS;
 
 /**
  * Created by weiersyuan on 2018/5/12.
  */
 public class Main {
-    public static long totalRetainedSize;
+    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/test2.hprof";  // /Users/weiersyuan/Desktop/123/dump_LowMemory.hprof
+    public static final String instanceOutFilePath = "/Users/weiersyuan/Desktop/out/instance.txt";
+    public static final String classOutFilePath = "/Users/weiersyuan/Desktop/out/class.txt";
 
     public static void main(String [] args) throws IOException {
-        final File hprofFile = new File("/Users/weiersyuan/Desktop/test2.hprof");
+        final File hprofFile = new File(hprofFilePath);
         final HprofBuffer buffer = new MemoryMappedFileBuffer(hprofFile);
         final HprofParser parser = new HprofParser(buffer);
         final Snapshot snapshot = parser.parse();
         snapshot.computeDominators();
-
         HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
-        StableList list = getAllInstance(snapshot);
-        for (int i = 0; i < list.size(); i++) {
-            Instance instance = list.get(i);
-            if (instance instanceof ClassInstance) {
-                AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, instance);
-                System.out.println(result.className + " leak " + ByteUtil.formatByteSize(result.retainedHeapSize) + "ration:" + 100 *(result.retainedHeapSize*1.0 / totalRetainedSize) + "%");
-                if (result.leakFound) {
-                    System.out.println(result.leakTrace.toString());
-                }
 
-                final ClassObj classObj = instance.getClassObj();
-                if (ANDROID_BITMAP_CLASS.equals(classObj.getClassName())) {
-                    ImageUtil.getImage((ClassInstance) instance);
-                }
-            } else if (instance instanceof ArrayInstance) {
-                AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, instance);
-                if (result.leakFound) {
-                    //System.out.println(result.leakTrace.toString());
-                }
-            }
-        }
+        // 分析所有的实例
+        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath));
+        // 分析所有的类
+        Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath));
+
+        instanceThread.start();
+        classThread.start();
     }
 
     private static void findMayActivityLeak(Snapshot snapshot) {
@@ -63,15 +52,52 @@ public class Main {
         }
     }
 
-    private static StableList getAllInstance(Snapshot snapshot) {
-        StableList list = new StableList();
-        List<Instance> instanceList = snapshot.getReachableInstances();
-        for (Instance instance : instanceList) {
-            totalRetainedSize += instance.getSize();
-            list.add(instance);
+    static class InstanceRunnable implements Runnable{
+        Snapshot snapshot;
+        HeapAnalyzer heapAnalyzer;
+        File file;
+
+        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName) {
+            this.snapshot = snapshot;
+            this.heapAnalyzer = heapAnalyzer;
+            this.file = new File(pathName);
         }
-        return list;
+
+        @Override
+        public void run() {
+            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer);
+            StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
+            try {
+                FileUtils.writeLines(file, topInstanceList.list, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+    static class ClassRunnable implements Runnable{
+        Snapshot snapshot;
+        HeapAnalyzer heapAnalyzer;
+        File file;
+
+        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath) {
+            this.snapshot = snapshot;
+            this.heapAnalyzer = heapAnalyzer;
+            this.file = new File(classOutFilePath);
+        }
+
+        @Override
+        public void run() {
+            ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, heapAnalyzer);
+            StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
+            try {
+                FileUtils.writeLines(file, topClassList.list);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 
