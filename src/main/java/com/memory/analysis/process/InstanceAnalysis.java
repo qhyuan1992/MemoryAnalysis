@@ -25,7 +25,7 @@ public class InstanceAnalysis {
     }
 
     private void findRefeference(StableList<InstanceWrapper> topInstanceList) {
-        for (InstanceWrapper instanceWrapper: topInstanceList.list) {
+        for (InstanceWrapper instanceWrapper: topInstanceList) {
             AnalysisResult analysisResult = heapAnalyzer.findLeakTrace(0, snapshot, instanceWrapper.instance);
             if (analysisResult != null) {
                 instanceWrapper.referenceChain = analysisResult;
@@ -34,6 +34,7 @@ public class InstanceAnalysis {
                 instanceWrapper.leakTrace = analysisResult.leakTrace;
                 instanceWrapper.retainedHeapSize = analysisResult.retainedHeapSize;
                 instanceWrapper.sizeRation = analysisResult.retainedHeapSize*1.0/totalRetainedSize;
+                instanceWrapper.id = instanceWrapper.instance.getId();
             }
         }
     }
@@ -47,6 +48,9 @@ public class InstanceAnalysis {
         List<Instance> instanceList = snapshot.getReachableInstances();
         for (Instance instance : instanceList) {
             totalRetainedSize += instance.getSize();
+            if (instance.getClassObj() == null || instance.getClassObj().getClassName().contains("$")) {
+                continue;
+            }
             InstanceWrapper instanceWrapper = new InstanceWrapper(instance);
             instanceWrapper.retainedHeapSize = instance.getTotalRetainedSize();
             topInstanceList.add(instanceWrapper);

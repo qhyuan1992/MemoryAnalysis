@@ -6,7 +6,6 @@ import com.memory.analysis.process.ClassObjWrapper;
 import com.memory.analysis.process.InstanceAnalysis;
 import com.memory.analysis.process.InstanceWrapper;
 import com.memory.analysis.utils.Constants;
-import com.memory.analysis.utils.FormatUtil;
 import com.memory.analysis.utils.StableList;
 import com.squareup.haha.perflib.ClassObj;
 import com.squareup.haha.perflib.HprofParser;
@@ -23,9 +22,11 @@ import java.io.IOException;
  * Created by weiersyuan on 2018/5/12.
  */
 public class Main {
-    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/test2.hprof";  // /Users/weiersyuan/Desktop/123/dump_LowMemory.hprof
-    public static final String instanceOutFilePath = "/Users/weiersyuan/Desktop/out/instance.txt";
-    public static final String classOutFilePath = "/Users/weiersyuan/Desktop/out/class.txt";
+    // /Users/weiersyuan/Desktop/test2.hprof
+    // /Users/weiersyuan/Desktop/123/dump_LowMemory.hprof
+    public static final String hprofFilePath = "/Users/weiersyuan/Desktop/test/test2.hprof";
+    public static final String instanceOutFilePath = "/Users/weiersyuan/Desktop/test/out/instance.txt";
+    public static final String classOutFilePath = "/Users/weiersyuan/Desktop/test/out/class.txt";
 
     public static void main(String [] args) throws IOException {
         final File hprofFile = new File(hprofFilePath);
@@ -68,7 +69,7 @@ public class Main {
             InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer);
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
             try {
-                FileUtils.writeLines(file, topInstanceList.list, true);
+                FileUtils.writeLines(file, topInstanceList, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,7 +92,7 @@ public class Main {
             ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, heapAnalyzer);
             StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
             try {
-                FileUtils.writeLines(file, topClassList.list);
+                FileUtils.writeLines(file, topClassList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
