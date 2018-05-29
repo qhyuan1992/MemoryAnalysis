@@ -11,13 +11,13 @@ public class FormatUtil {
         long mb = kb*1024;
         long gb = mb*1024;
         if (size >= gb){
-            return String.format("%.1f GB",(float)size/gb);
+            return String.format("%.2f GB",(float)size/gb);
         }else if (size >= mb){
             float f = (float) size/mb;
-            return String.format(f > 100 ?"%.0f MB":"%.1f MB",f);
+            return String.format(f > 100 ?"%.2f MB":"%.2f MB",f);
         }else if (size > kb){
             float f = (float) size / kb;
-            return String.format(f>100?"%.0f KB":"%.1f KB",f);
+            return String.format(f>100?"%.2f KB":"%.2f KB",f);
         }else {
             return String.format("%d B",size);
         }
@@ -35,4 +35,11 @@ public class FormatUtil {
         return str;
     }
 
+    public static boolean realEqual(String str1, String str2) {
+        return str1.contains(str2) || str2.contains(str1);
+    }
+
+    public static String formatAddr(long id) {
+        return "0x" + Long.toHexString(id);
+    }
 }

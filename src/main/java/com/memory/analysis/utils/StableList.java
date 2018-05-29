@@ -1,32 +1,20 @@
 package com.memory.analysis.utils;
 
-import com.memory.analysis.process.SortableObject;
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.TreeSet;
 
 /**
  * 保存RetainedSize最大的前50个对象实例
  */
-public class StableList<T extends SortableObject> {
+
+public class StableList<E> extends TreeSet<E>{
     private static final int MAX_NUM = 50;
-    public List<T> list = new LinkedList<>();
 
-    public void add(T e) {
-        if (list.size() >= MAX_NUM) {
-            list.remove(list.size() - 1);
+
+    @Override
+    public boolean add(E e) {
+        if (size() >= MAX_NUM) {
+            pollLast();
         }
-        list.add(e);
-        list.sort((i1, i2) -> Long.compare(i2.getSize(), i1.getSize()));
+        return super.add(e);
     }
-
-    public int size() {
-        return list.size();
-    }
-
-    public T get(int i) {
-        return list.get(i);
-    }
-
-
 }

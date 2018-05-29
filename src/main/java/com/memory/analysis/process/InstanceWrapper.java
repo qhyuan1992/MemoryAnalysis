@@ -6,7 +6,9 @@ import com.memory.analysis.utils.FormatUtil;
 import com.squareup.haha.perflib.ClassObj;
 import com.squareup.haha.perflib.Instance;
 
-public class InstanceWrapper implements SortableObject {
+import static com.memory.analysis.utils.FormatUtil.realEqual;
+
+public class InstanceWrapper implements SortableObject, Comparable{
     // 对象实例
     public Instance instance;
     // 对象引用链
@@ -22,13 +24,45 @@ public class InstanceWrapper implements SortableObject {
     // 引用内存占比
     public double sizeRation;
 
+    public long id;
+
     public InstanceWrapper(Instance instance) {
         this.instance = instance;
+    }
+
+    public void fill(AnalysisResult analysisResult, long totalRetainedSize) {
+        this.referenceChain = analysisResult;
+        this.found = analysisResult.leakFound;
+        this.classObj = instance.getClassObj();
+        this.leakTrace = analysisResult.leakTrace;
+        this.retainedHeapSize = analysisResult.retainedHeapSize;
+        this.sizeRation = analysisResult.retainedHeapSize*1.0/totalRetainedSize;
+        this.id = instance.getId();
     }
 
     @Override
     public long getSize() {
         return retainedHeapSize;
+    }
+
+    /**
+     * className相同  大小相差不大时不用继续添加
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        InstanceWrapper that = (InstanceWrapper) o;
+
+        // 相差5K以上认为是不同的对象
+        if (Math.abs(retainedHeapSize - that.retainedHeapSize) > 10) return false;
+        return classObj != null ? realEqual(classObj.getClassName(), that.classObj.getClassName()) : that.classObj == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return classObj != null ? classObj.getClassName().substring(0, classObj.getClassName().lastIndexOf(".")).hashCode() : 0;
     }
 
     @Override
@@ -39,6 +73,8 @@ public class InstanceWrapper implements SortableObject {
                     .append(" reference ")
                     .append(FormatUtil.formatByteSize(retainedHeapSize))
                     .append(" ration:").append(FormatUtil.formatPercent(sizeRation))
+                    .append(" ")
+                    .append(FormatUtil.formatAddr(id))
                     .append("\n")
                     .append(leakTrace.toString())
                     .append("\n");
@@ -46,4 +82,11 @@ public class InstanceWrapper implements SortableObject {
         return builder.toString();
 
     }
+
+    @Override
+    public int compareTo(Object o) {
+        InstanceWrapper that = (InstanceWrapper) o;
+        return Long.compare(that.getSize(), this.getSize());
+    }
+
 }

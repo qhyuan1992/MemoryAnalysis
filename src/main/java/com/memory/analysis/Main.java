@@ -25,6 +25,7 @@ public class Main {
     public static final String hprofFilePath = "src/main/resources/test2.hprof";
     public static final String instanceOutFilePath = "src/main/resources/instance.txt";
     public static final String classOutFilePath = "src/main/resources/class.txt";
+    public static final String activityOutFilePath = "src/main/resources/avtivity.txt";
     public static String dirPath = "src/main/resources/";
 
     public static void main(String [] args) throws IOException {
@@ -85,7 +86,7 @@ public class Main {
             InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer,hprofFileName);
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
             try {
-                FileUtils.writeLines(file, topInstanceList.list, true);
+                FileUtils.writeLines(file, topInstanceList, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -108,7 +109,7 @@ public class Main {
             ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, heapAnalyzer);
             StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
             try {
-                FileUtils.writeLines(file, topClassList.list);
+                FileUtils.writeLines(file, topClassList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
