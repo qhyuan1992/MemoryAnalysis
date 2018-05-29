@@ -11,6 +11,7 @@ import static java.util.Collections.unmodifiableList;
  * to the GC roots. Fixing the leak usually means breaking one of the references in that chain.
  */
 public final class LeakTrace implements Serializable {
+  private static final int MAX_DEPTH = 20;
 
   public final List<LeakTraceElement> elements;
 
@@ -20,19 +21,26 @@ public final class LeakTrace implements Serializable {
 
   @Override public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < elements.size(); i++) {
+    for (int i = 0; i < elements.size() && i < MAX_DEPTH; i++) {
       LeakTraceElement element = elements.get(i);
-      sb.append("* ");
       if (i == 0) {
         sb.append("GC ROOT ");
       } else if (i == elements.size() - 1) {
-        sb.append("leaks ");
+        blank(sb, i);
+        sb.append("|- ");
       } else {
-        sb.append("references ");
+        blank(sb, i);
+        sb.append("|- ");
       }
       sb.append(element).append("\n");
     }
     return sb.toString();
+  }
+
+  public void blank(StringBuilder sb, int num) {
+    for (int i = 0; i < num; i++) {
+      sb.append(" ");
+    }
   }
 
   public String toDetailedString() {

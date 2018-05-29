@@ -30,6 +30,9 @@ public class ClassAnalysis {
         for (Heap heap: allHeaps) {
             Collection<ClassObj> classObjs = heap.getClasses();
             for (ClassObj classObj : classObjs) {
+                if (classObj == null || classObj.getClassName().contains("$")) {
+                    continue;
+                }
                 ClassObjWrapper classObjWrapper = new ClassObjWrapper(classObj);
                 classObjWrapper.instanceCount = classObj.getInstanceCount();
                 for (Instance instance : classObj.getInstancesList()) {

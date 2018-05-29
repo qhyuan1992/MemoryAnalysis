@@ -41,7 +41,7 @@ public class Main {
             }
         }
     }
-    
+
     private static void handleHprof(File hprofFile) throws IOException {
         System.out.println("handle file " + hprofFile.getPath());
         final HprofBuffer buffer = new MemoryMappedFileBuffer(hprofFile);
@@ -51,13 +51,12 @@ public class Main {
         HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
 
         // 分析所有的实例
-        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath,hprofFile.getName()));
+        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath,hprofFile.getName(),activityOutFilePath));
         // 分析所有的类
         Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath));
 
         instanceThread.start();
         classThread.start();
-        
     }
 
     private static void findMayActivityLeak(Snapshot snapshot) {
@@ -73,20 +72,24 @@ public class Main {
         HeapAnalyzer heapAnalyzer;
         File file;
         String hprofFileName;
+        File activityClassOutFile;
 
-        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName , String hprofFileName) {
+        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName , String hprofFileName,String activityClassOutFilePath) {
             this.snapshot = snapshot;
             this.heapAnalyzer = heapAnalyzer;
             this.file = new File(pathName);
             this.hprofFileName = hprofFileName;
+            this.activityClassOutFile = new File(activityClassOutFilePath);
         }
 
         @Override
         public void run() {
             InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer,hprofFileName);
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
+            StableList<InstanceWrapper> topActivityClassList = instanceAnalysis.getTopActivityClassList();
             try {
                 FileUtils.writeLines(file, topInstanceList, true);
+                FileUtils.writeLines(activityClassOutFile, topActivityClassList, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -113,6 +116,7 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
