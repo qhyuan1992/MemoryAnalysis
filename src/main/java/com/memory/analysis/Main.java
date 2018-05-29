@@ -1,10 +1,7 @@
 package com.memory.analysis;
 
 import com.memory.analysis.leak.HeapAnalyzer;
-import com.memory.analysis.process.ClassAnalysis;
-import com.memory.analysis.process.ClassObjWrapper;
-import com.memory.analysis.process.InstanceAnalysis;
-import com.memory.analysis.process.InstanceWrapper;
+import com.memory.analysis.process.*;
 import com.memory.analysis.utils.Constants;
 import com.memory.analysis.utils.StableList;
 import com.squareup.haha.perflib.ClassObj;
@@ -38,9 +35,9 @@ public class Main {
         HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
 
         // 分析所有的实例
-        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath));
+        Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath, activityOutFilePath));
         // 分析所有的类
-        Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath, activityOutFilePath));
+        Thread classThread = new Thread(new ClassRunnable(snapshot, heapAnalyzer, classOutFilePath));
 
         instanceThread.start();
         classThread.start();
@@ -58,19 +55,23 @@ public class Main {
         Snapshot snapshot;
         HeapAnalyzer heapAnalyzer;
         File file;
+        File activityClassOutFile;
 
-        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName) {
+        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName, String activityClassOutFilePath) {
             this.snapshot = snapshot;
             this.heapAnalyzer = heapAnalyzer;
             this.file = new File(pathName);
+            this.activityClassOutFile = new File(activityClassOutFilePath);
         }
 
         @Override
         public void run() {
             InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, heapAnalyzer);
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
+            StableList<InstanceWrapper> topActivityClassList = instanceAnalysis.getTopActivityClassList();
             try {
                 FileUtils.writeLines(file, topInstanceList, true);
+                FileUtils.writeLines(activityClassOutFile, topActivityClassList, true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,24 +82,19 @@ public class Main {
         Snapshot snapshot;
         HeapAnalyzer heapAnalyzer;
         File file;
-        File activityClassOutFile;
 
-        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath, String activityClassOutFilePath) {
+        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath) {
             this.snapshot = snapshot;
             this.heapAnalyzer = heapAnalyzer;
             this.file = new File(classOutFilePath);
-            this.activityClassOutFile = new File(activityClassOutFilePath);
         }
 
         @Override
         public void run() {
             ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, heapAnalyzer);
             StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
-            StableList<ClassObjWrapper> topActivityClassList = classAnalysis.getTopActivityClassList();
-
             try {
                 FileUtils.writeLines(file, topClassList);
-                FileUtils.writeLines(activityClassOutFile, topActivityClassList);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,6 +153,5 @@ public class Main {
         AnalysisResult result = heapAnalyzer.findLeakTrace(0, snapshot, i);
         System.out.println(result.className + "leak " + result.retainedHeapSize /1024.0/1024.0 + "M");
         System.out.println(result.leakTrace.toString());*/
-
     }
 }

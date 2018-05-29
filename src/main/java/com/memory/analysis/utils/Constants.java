@@ -5,6 +5,6 @@ package com.memory.analysis.utils;
  */
 public class Constants {
     public static final String ANDROID_BITMAP_CLASS = "android.graphics.Bitmap";
-    public static final String ANDROID_BACTIVITY_CLASS = "activity";
+    public static final String ANDROID_BACTIVITY_CLASS = "Activity";
 
 }
