@@ -1,5 +1,7 @@
 package com.memory.analysis;
 
+import com.memory.analysis.android.AndroidExcludedRefs;
+import com.memory.analysis.exclusion.ExcludedRefs;
 import com.memory.analysis.leak.HeapAnalyzer;
 import com.memory.analysis.process.ClassAnalysis;
 import com.memory.analysis.process.ClassObjWrapper;
@@ -45,7 +47,8 @@ public class Main {
         final HprofParser parser = new HprofParser(buffer);
         final Snapshot snapshot = parser.parse();
         snapshot.computeDominators();
-        HeapAnalyzer heapAnalyzer = new HeapAnalyzer();
+        ExcludedRefs refs = AndroidExcludedRefs.createAppDefaults().build();
+        HeapAnalyzer heapAnalyzer = new HeapAnalyzer(refs);
 
         // 分析所有的实例
         Thread instanceThread = new Thread(new InstanceRunnable(snapshot, heapAnalyzer, instanceOutFilePath,hprofFile.getName(),activityOutFilePath));
