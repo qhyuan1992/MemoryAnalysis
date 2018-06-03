@@ -1,7 +1,5 @@
 package com.memory.analysis.process;
 
-import com.memory.analysis.db.InstanceDBDao;
-import com.memory.analysis.entity.InstanceResultEntity;
 import com.memory.analysis.leak.AnalysisResult;
 import com.memory.analysis.leak.HeapAnalyzer;
 import com.memory.analysis.utils.Constants;
@@ -23,14 +21,10 @@ public class InstanceAnalysis {
     private Snapshot snapshot;
     private final HeapAnalyzer heapAnalyzer;
 
-    private InstanceDBDao instanceDBDao;
-    private String hprofFileName;
 
-    public InstanceAnalysis(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String hprofFileName) {
+    public InstanceAnalysis(Snapshot snapshot, HeapAnalyzer heapAnalyzer) {
         this.snapshot = snapshot;
         this.heapAnalyzer = heapAnalyzer;
-        this.hprofFileName = hprofFileName;
-        instanceDBDao = new InstanceDBDao();
         topInstanceList = initTopInstance();
         findRefeference(topInstanceList);
     }
@@ -40,20 +34,8 @@ public class InstanceAnalysis {
             AnalysisResult analysisResult = heapAnalyzer.findLeakTrace(0, snapshot, instanceWrapper.instance);
             if (analysisResult != null) {
                 instanceWrapper.fill(analysisResult, totalRetainedSize);
-                if (instanceWrapper.found) {
-                    InstanceResultEntity instanceResultEntity = instanceDBDao.query(instanceWrapper.classObj.getClassName());
-                    if (instanceResultEntity != null) {
-                        instanceDBDao.update(instanceResultEntity, hprofFileName, instanceWrapper.retainedHeapSize / 1024.0 / 1024.0, instanceWrapper
-                                .leakTrace.toString());
-                    } else {
-                        instanceDBDao.add(instanceWrapper.classObj.getClassName(), 1, instanceWrapper.retainedHeapSize / 1024.0 / 1024.0, hprofFileName,
-                                instanceWrapper.leakTrace.toString());
-                    }
-                    System.out.println(instanceWrapper);
-                }
             }
         }
-        instanceDBDao.close();
         for (InstanceWrapper instanceWrapper : topActivityClassList) {
             System.out.println("class name is " + instanceWrapper.instance.getClassObj().getClassName().toLowerCase());
             AnalysisResult analysisResult = heapAnalyzer.findLeakTrace(0, snapshot, instanceWrapper.instance);

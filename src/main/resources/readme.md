@@ -72,7 +72,7 @@ public class LeakInspector {
 
 数据库：auto_memory_analyze_result_db
 
-表：result_table
+表：instance_result_table
 
 DBUtil中使用的是我本地新建的数据库，其中：
 

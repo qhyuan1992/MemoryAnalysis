@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `result_table`;
 CREATE TABLE `result_table` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id值',
   `object_name` text,
-  `num` int(10) unsigned DEFAULT '0' COMMENT '数量',
+  `sumNum` int(10) unsigned DEFAULT '0' COMMENT '数量',
   `sum_leak` double unsigned DEFAULT '0' COMMENT '总共泄漏的内存(M)',
   `ave_leak` double unsigned DEFAULT '0' COMMENT '平均每次泄漏内存(M)',
   `max_leak` double DEFAULT '0' COMMENT '最大泄漏内存',

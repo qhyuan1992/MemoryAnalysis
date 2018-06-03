@@ -6,6 +6,7 @@ package com.memory.analysis.entity;
  */
 public class InstanceResultEntity {
     public String objectName;
+    public String objectAddressID;
     public int num;
     public double sumLeak;
     public double aveLeak;
@@ -16,13 +17,16 @@ public class InstanceResultEntity {
     public InstanceResultEntity() {
     }
 
-    public InstanceResultEntity(String objectName, int num, double sumLeak, double aveLeak, double maxLeak, String maxLeakFileName) {
+    public InstanceResultEntity(String objectName, String objectAddressID, int num, double sumLeak, double aveLeak, double maxLeak, String maxLeakFileName,
+                                String gcRoot) {
         this.objectName = objectName;
+        this.objectAddressID = objectAddressID;
         this.num = num;
         this.sumLeak = sumLeak;
         this.aveLeak = aveLeak;
         this.maxLeak = maxLeak;
         this.maxLeakFileName = maxLeakFileName;
+        this.gcRoot = gcRoot;
     }
 
     public String getObjectName() {
@@ -31,6 +35,14 @@ public class InstanceResultEntity {
 
     public void setObjectName(String objectName) {
         this.objectName = objectName;
+    }
+
+    public String getObjectAddressID() {
+        return objectAddressID;
+    }
+
+    public void setObjectAddressID(String objectAddressID) {
+        this.objectAddressID = objectAddressID;
     }
 
     public int getNum() {
@@ -73,15 +85,25 @@ public class InstanceResultEntity {
         this.maxLeakFileName = maxLeakFileName;
     }
 
+    public String getGcRoot() {
+        return gcRoot;
+    }
+
+    public void setGcRoot(String gcRoot) {
+        this.gcRoot = gcRoot;
+    }
+
     @Override
     public String toString() {
         return "InstanceResultEntity{" +
                 "objectName='" + objectName + '\'' +
-                ", num=" + num +
+                ", objectAddressID='" + objectAddressID + '\'' +
+                ", sumNum=" + num +
                 ", sumLeak=" + sumLeak +
                 ", aveLeak=" + aveLeak +
                 ", maxLeak=" + maxLeak +
                 ", maxLeakFileName='" + maxLeakFileName + '\'' +
+                ", gcRoot='" + gcRoot + '\'' +
                 '}';
     }
 }
