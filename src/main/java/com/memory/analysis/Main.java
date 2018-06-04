@@ -1,9 +1,11 @@
 package com.memory.analysis;
 
+import com.memory.analysis.android.AndroidExcludedRefs;
 import com.memory.analysis.db.ClassResultDao;
 import com.memory.analysis.db.InstanceResultDao;
 import com.memory.analysis.db.factory.IFactory;
 import com.memory.analysis.db.factory.MySqlFactory;
+import com.memory.analysis.exclusion.ExcludedRefs;
 import com.memory.analysis.leak.HeapAnalyzer;
 import com.memory.analysis.process.ClassAnalysis;
 import com.memory.analysis.process.ClassObjWrapper;
@@ -93,7 +95,8 @@ public class Main {
             long start = System.currentTimeMillis();
             Snapshot snapshot = hprofParser.parse();
             snapshot.computeDominators();
-            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, new HeapAnalyzer());
+            ExcludedRefs refs = AndroidExcludedRefs.createAppDefaults().build();
+            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, new HeapAnalyzer(refs));
             StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
             StableList<InstanceWrapper> topActivityClassList = instanceAnalysis.getTopActivityClassList();
             try {
@@ -159,7 +162,8 @@ public class Main {
             long start = System.currentTimeMillis();
             Snapshot snapshot = hprofParser.parse();
             snapshot.computeDominators();
-            ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, new HeapAnalyzer());
+            ExcludedRefs refs = AndroidExcludedRefs.createAppDefaults().build();
+            ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, new HeapAnalyzer(refs));
             StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
             try {
                 FileUtils.writeLines(file, topClassList);

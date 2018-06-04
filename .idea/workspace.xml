@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="226bbf7c-f66a-4867-9601-e5efbb80a0eb" name="Default" comment="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/memory/analysis/Main.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceAnalysis.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceWrapper.java&#10;#&#9;src/main/java/com/memory/analysis/utils/FormatUtil.java&#10;#&#9;src/main/java/com/memory/analysis/utils/StableList.java&#10;成功处理冲突，并添加数据库支持">
+    <list default="true" id="226bbf7c-f66a-4867-9601-e5efbb80a0eb" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/android/AndroidExcludedRefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/android/AndroidExcludedRefs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/DBUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/result_table.sql" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -70,11 +71,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3652">
-              <caret line="166" column="90" lean-forward="true" selection-start-line="166" selection-start-column="90" selection-end-line="166" selection-end-column="90" />
+            <state relative-caret-position="594">
+              <caret line="108" column="73" lean-forward="true" selection-start-line="108" selection-start-column="73" selection-end-line="108" selection-end-column="73" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectionUtil.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/ConnectionUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="24" column="34" lean-forward="true" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -325,6 +338,16 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MemoryAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MemoryAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="perflib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -519,11 +542,18 @@
       <option name="project" value="LOCAL" />
       <updated>1527573584507</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis">
+      <created>1528077599399</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1528077599399</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87710000" />
+    <option name="totallyTimeSpent" value="88372000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -552,7 +582,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2633833" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2633833" />
       <window_info anchor="right" id="Database" order="4" weight="0.32976446" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24937657" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -627,7 +657,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="处理下冲突" />
     <MESSAGE value="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/memory/analysis/Main.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceAnalysis.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceWrapper.java&#10;#&#9;src/main/java/com/memory/analysis/utils/FormatUtil.java&#10;#&#9;src/main/java/com/memory/analysis/utils/StableList.java&#10;成功处理冲突，并添加数据库支持" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/memory/analysis/Main.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceAnalysis.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceWrapper.java&#10;#&#9;src/main/java/com/memory/analysis/utils/FormatUtil.java&#10;#&#9;src/main/java/com/memory/analysis/utils/StableList.java&#10;成功处理冲突，并添加数据库支持" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -687,6 +718,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="190" column="24" selection-start-line="190" selection-start-column="24" selection-end-line="190" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1865#1866#0" expanded="true" />
+            <element signature="e#1911#1912#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -835,24 +871,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/ConnectionUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/DBUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="24" column="34" lean-forward="true" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
-          <folding>
-            <element signature="e#1013#1014#0" expanded="true" />
-            <element signature="e#1046#1047#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/process/InstanceAnalysis.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
@@ -964,16 +982,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3652">
-          <caret line="166" column="90" lean-forward="true" selection-start-line="166" selection-start-column="90" selection-end-line="166" selection-end-column="90" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/src.zip!/java/util/HashMap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -1005,6 +1013,37 @@
             <element signature="e#409#410#0" expanded="true" />
             <element signature="e#459#460#0" expanded="true" />
             <element signature="e#501#502#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/DBUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="24" column="34" lean-forward="true" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+          <folding>
+            <element signature="e#1013#1014#0" expanded="true" />
+            <element signature="e#1046#1047#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="108" column="73" lean-forward="true" selection-start-line="108" selection-start-column="73" selection-end-line="108" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/ConnectionUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="24" column="34" lean-forward="true" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

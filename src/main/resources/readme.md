@@ -68,29 +68,15 @@ public class LeakInspector {
 
 # 数据库使用
 
-使用result_table.sql这个文件新建在本地使用数据库软件新建一个数据库:
-
 数据库：auto_memory_analyze_result_db
 
-表：instance_result_table
-
-DBUtil中使用的是我本地新建的数据库，其中：
+表：instance_result_table（实例分析的结果）、activity_result_table（activity分析的结果）、class_result_table（类分析的结果）
 
 数据库用户名：root
 
 密码：jiangyu12315
 
-这个可以根据情况自己新建用户并设置密码，在使用是修改DBUtil中相应的代码即可：
-
-```java
-//URL指向要访问的数据库名auto_memory_analyze_result_db
-    public static final String URL = "jdbc:mysql://localhost:3306/auto_memory_analyze_result_db?useUnicode=true&characterEncoding=utf-8";
-    //MySQL配置时的用户名root
-    public static final String USER = "root";
-    //MySQL配置时的密码jiang12315
-    public static final String PASSWORD = "jiang12315";
-```
-
 **ps：**
 
-这里将需要分析的hprof文件拷贝到resources目录下即可
+这里将需要分析的hprof文件拷贝到main/files/目录下
+
