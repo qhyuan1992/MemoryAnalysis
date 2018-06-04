@@ -2,25 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="226bbf7c-f66a-4867-9601-e5efbb80a0eb" name="Default" comment="Merge branch 'master' of https://github.com/qhyuan1992/MemoryAnalysis&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/memory/analysis/Main.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceAnalysis.java&#10;#&#9;src/main/java/com/memory/analysis/process/InstanceWrapper.java&#10;#&#9;src/main/java/com/memory/analysis/utils/FormatUtil.java&#10;#&#9;src/main/java/com/memory/analysis/utils/StableList.java&#10;成功处理冲突，并添加数据库支持">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/ClassResultDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/ClassResultMySqlDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/HandleFileDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultMySqlDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/factory/IFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/factory/MySqlFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/ClassResultEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/HandleFileEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/CheckerUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/ConnectionUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceDBDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/InstanceResultEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/InstanceResultEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/process/InstanceAnalysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/process/InstanceAnalysis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/DBUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/utils/DBUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/result_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/result_table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/memory/analysis/android/AndroidExcludedRefs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/memory/analysis/android/AndroidExcludedRefs.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -87,11 +70,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-242">
-              <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+            <state relative-caret-position="3652">
+              <caret line="166" column="90" lean-forward="true" selection-start-line="166" selection-start-column="90" selection-end-line="166" selection-end-column="90" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -121,11 +107,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InstanceResultDao.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InstanceResultDao.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultDao.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="33" column="26" selection-end-line="44" />
+            <state relative-caret-position="528">
+              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#377#378#0" expanded="true" />
@@ -239,9 +225,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/factory/MySqlFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/process/InstanceAnalysis.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultMySqlDao.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/ClassResultDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java" />
       </list>
     </option>
   </component>
@@ -331,26 +317,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="analysis" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MemoryAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MemoryAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis" type="462c0819:PsiDirectoryNode" />
-              <item name="db" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MemoryAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MemoryAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="analysis" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MemoryAnalysis" type="b2602c69:ProjectViewProjectNode" />
@@ -557,7 +523,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87521000" />
+    <option name="totallyTimeSpent" value="87710000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -582,7 +548,7 @@
       <window_info anchor="right" id="Maven Projects" order="3" weight="0.32976446" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.40604028" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32920536" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3281075" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -594,14 +560,36 @@
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5604027" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info id="Nl-Palette" order="2" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Properties" order="3" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2633833" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="Nl-Palette" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.24937657" />
+      <window_info anchor="right" id="Palette" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="right" id="Maven Projects" order="3" weight="0.32976446" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.5604027" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.051344745" />
+      <window_info id="Image Layers" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32976446" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32920536" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32894737" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Properties" order="3" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="UI Designer" order="4" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.41657335" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.40604028" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32550335" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info id="Designer" order="2" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -699,11 +687,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="190" column="24" selection-start-line="190" selection-start-column="24" selection-end-line="190" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1865#1866#0" expanded="true" />
-            <element signature="e#1911#1912#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -807,10 +790,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
           <caret line="18" column="17" lean-forward="true" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
-          <folding>
-            <element signature="e#486#487#0" expanded="true" />
-            <element signature="e#510#511#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -825,11 +804,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="858">
           <caret line="48" column="67" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#519#520#0" expanded="true" />
-            <element signature="e#555#556#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -837,10 +811,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="684">
           <caret line="969" column="38" selection-start-line="969" selection-start-column="32" selection-end-line="969" selection-end-column="38" />
-          <folding>
-            <element signature="e#40171#40172#0" expanded="true" />
-            <element signature="e#40220#40221#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -848,10 +818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
-          <folding>
-            <element signature="e#1345#1346#0" expanded="true" />
-            <element signature="e#1395#1396#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -859,30 +825,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="158">
           <caret line="308" column="16" selection-start-line="308" selection-start-column="16" selection-end-line="308" selection-end-column="16" />
-          <folding>
-            <element signature="e#1897#1903#0" expanded="true" />
-            <element signature="e#2434#2435#0" expanded="true" />
-            <element signature="e#2494#2495#0" expanded="true" />
-            <element signature="e#2859#2860#0" expanded="true" />
-            <element signature="e#2902#2903#0" expanded="true" />
-            <element signature="e#3552#3553#0" expanded="true" />
-            <element signature="e#3581#3582#0" expanded="true" />
-            <element signature="e#3816#3817#0" expanded="true" />
-            <element signature="e#3868#3869#0" expanded="true" />
-            <element signature="e#3922#3923#0" expanded="true" />
-            <element signature="e#3975#3976#0" expanded="true" />
-            <element signature="e#4044#4045#0" expanded="true" />
-            <element signature="e#4096#4097#0" expanded="true" />
-            <element signature="e#4605#4606#0" expanded="true" />
-            <element signature="e#4665#4666#0" expanded="true" />
-            <element signature="e#4723#4724#0" expanded="true" />
-            <element signature="e#4782#4783#0" expanded="true" />
-            <element signature="e#5512#5513#0" expanded="true" />
-            <element signature="e#5563#5564#0" expanded="true" />
-            <element signature="e#5604#5605#0" expanded="true" />
-            <element signature="e#5638#5639#0" expanded="true" />
-            <element signature="e#10398#10408#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -890,15 +832,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="10" column="28" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#770#771#0" expanded="true" />
-            <element signature="e#810#811#0" expanded="true" />
-            <element signature="e#1312#1313#0" expanded="true" />
-            <element signature="e#1351#1352#0" expanded="true" />
-            <element signature="e#1893#1894#0" expanded="true" />
-            <element signature="e#2028#2029#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -906,9 +839,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -927,9 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="14" column="34" lean-forward="true" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -949,9 +876,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="10" column="49" lean-forward="true" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -975,63 +899,16 @@
           <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1120#1121#0" expanded="true" />
-            <element signature="e#1165#1166#0" expanded="true" />
+            <element signature="e#452#453#0" expanded="true" />
+            <element signature="e#484#485#0" expanded="true" />
+            <element signature="e#534#535#0" expanded="true" />
+            <element signature="e#576#577#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/db/ActivityResultDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="90" selection-start-line="13" selection-start-column="69" selection-end-line="13" selection-end-column="90" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/ActivityResultEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-          <folding>
-            <element signature="e#922#923#0" expanded="true" />
-            <element signature="e#955#956#0" expanded="true" />
-            <element signature="e#1007#1008#0" expanded="true" />
-            <element signature="e#1051#1052#0" expanded="true" />
-            <element signature="e#1093#1094#0" expanded="true" />
-            <element signature="e#1131#1132#0" expanded="true" />
-            <element signature="e#1193#1194#0" expanded="true" />
-            <element signature="e#1247#1248#0" expanded="true" />
-            <element signature="e#1274#1275#0" expanded="true" />
-            <element signature="e#1300#1301#0" expanded="true" />
-            <element signature="e#1335#1336#0" expanded="true" />
-            <element signature="e#1365#1366#0" expanded="true" />
-            <element signature="e#1399#1400#0" expanded="true" />
-            <element signature="e#1429#1430#0" expanded="true" />
-            <element signature="e#1475#1476#0" expanded="true" />
-            <element signature="e#1513#1514#0" expanded="true" />
-            <element signature="e#1547#1548#0" expanded="true" />
-            <element signature="e#1577#1578#0" expanded="true" />
-            <element signature="e#1623#1624#0" expanded="true" />
-            <element signature="e#1661#1662#0" expanded="true" />
-            <element signature="e#1695#1696#0" expanded="true" />
-            <element signature="e#1725#1726#0" expanded="true" />
-            <element signature="e#1771#1772#0" expanded="true" />
-            <element signature="e#1809#1810#0" expanded="true" />
-            <element signature="e#1851#1852#0" expanded="true" />
-            <element signature="e#1889#1890#0" expanded="true" />
-            <element signature="e#1951#1952#0" expanded="true" />
-            <element signature="e#2005#2006#0" expanded="true" />
-            <element signature="e#2038#2039#0" expanded="true" />
-            <element signature="e#2067#2068#0" expanded="true" />
-            <element signature="e#2111#2112#0" expanded="true" />
-            <element signature="e#2147#2148#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/db/ActivityResultDao.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/entity/ActivityResultEntity.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/db/HandleFileDao.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -1089,8 +966,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-242">
-          <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+        <state relative-caret-position="3652">
+          <caret line="166" column="90" lean-forward="true" selection-start-line="166" selection-start-column="90" selection-end-line="166" selection-end-column="90" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1117,8 +997,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/memory/analysis/db/InstanceResultDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="33" column="26" selection-end-line="44" />
+        <state relative-caret-position="528">
+          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#377#378#0" expanded="true" />
