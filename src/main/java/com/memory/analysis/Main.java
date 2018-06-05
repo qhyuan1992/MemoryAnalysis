@@ -31,10 +31,15 @@ import java.util.concurrent.Executors;
  * Created by weiersyuan on 2018/5/12.
  */
 public class Main {
+
+    public static final int TYPE_ACTIVITY = 0;
+    public static final int TYPE_CLASS = 1;
+    public static final int TYPE_INSTANCE = 2;
+
     public static final String hprofFilePath = "src/main/resources/test2.hprof";
-    public static final String instanceOutFilePath = "src/main/resources/instance.txt";
-    public static final String classOutFilePath = "src/main/resources/class.txt";
-    public static final String activityOutFilePath = "src/main/resources/activity.txt";
+    public static final String instanceOutFilePathPatten = "src/main/resources/%s/%s_instance.txt";
+    public static final String classOutFilePathPatten = "src/main/resources/%s/%s_class.txt";
+    public static final String activityOutFilePathPatten = "src/main/resources/%s/%s_activity.txt";
     public static String dirPath = "src/main/files/";
     // 处理HPROF文件超时(ms)
     public static final int TIME_OUT = 20 * 1000;
@@ -44,6 +49,25 @@ public class Main {
     private static ClassResultDao classResultMySqlDao;
 
 
+    public static String generateFilepath(int type, String fileName) {
+        String result = null;
+        switch(type) {
+            case TYPE_ACTIVITY:
+                result = String.format(activityOutFilePathPatten, fileName, fileName);
+                break;
+            case TYPE_CLASS:
+                result = String.format(classOutFilePathPatten, fileName, fileName);
+                break;
+            case TYPE_INSTANCE:
+                result = String.format(instanceOutFilePathPatten, fileName, fileName);
+                break;
+        }
+        return result;
+    }
+
+    public static String getFileName(File file) {
+        return file.getName().substring(0, file.getName().lastIndexOf("."));
+    }
     public static void main(String[] args) throws IOException {
         IFactory iFactory = new MySqlFactory();
         instanceResultMySqlDao = iFactory.createInstanceResultDao();
@@ -57,8 +81,8 @@ public class Main {
         for (int i = 0; i < arrayFiles.length; i++) {
             if (arrayFiles[i].isFile() && arrayFiles[i].getName().endsWith("hprof")) {
                 File hprofFile = new File(dirPath + arrayFiles[i].getName());
-                fixedThreadPool.execute(new InstanceRunnable(hprofFile, instanceOutFilePath, activityOutFilePath));
-                fixedThreadPool.execute(new ClassRunnable(hprofFile, classOutFilePath));
+                fixedThreadPool.execute(new InstanceRunnable(hprofFile, generateFilepath(TYPE_INSTANCE, getFileName(hprofFile)), generateFilepath(TYPE_ACTIVITY, getFileName(hprofFile))));
+                fixedThreadPool.execute(new ClassRunnable(hprofFile, generateFilepath(TYPE_CLASS, getFileName(hprofFile))));
             }
         }
     }
