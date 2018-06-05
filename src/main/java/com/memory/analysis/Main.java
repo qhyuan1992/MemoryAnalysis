@@ -39,9 +39,9 @@ public class Main {
     // 处理HPROF文件超时(ms)
     public static final int TIME_OUT = 20 * 1000;
 
-    static ExecutorService fixedThreadPool;
-    static InstanceResultDao instanceResultMySqlDao;
-    static ClassResultDao classResultMySqlDao;
+    private static ExecutorService fixedThreadPool;
+    private static InstanceResultDao instanceResultMySqlDao;
+    private static ClassResultDao classResultMySqlDao;
 
 
     public static void main(String[] args) throws IOException {
