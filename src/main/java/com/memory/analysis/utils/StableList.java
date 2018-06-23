@@ -7,7 +7,7 @@ import java.util.TreeSet;
  */
 
 public class StableList<E> extends TreeSet<E>{
-    private static final int MAX_NUM = 50;
+    private static final int MAX_NUM = 10;
 
 
     @Override
