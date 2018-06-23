@@ -6,6 +6,9 @@ import com.memory.analysis.utils.FormatUtil;
 import com.squareup.haha.perflib.ClassObj;
 import com.squareup.haha.perflib.Instance;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.memory.analysis.utils.FormatUtil.realEqual;
 
 public class InstanceWrapper implements SortableObject, Comparable{
@@ -25,6 +28,11 @@ public class InstanceWrapper implements SortableObject, Comparable{
     public double sizeRation;
 
     public long id;
+
+    private static Set<String> instanceExcluded = new HashSet();
+    static {
+        instanceExcluded.add("android.graphics.Bitmap");
+    }
 
     public InstanceWrapper(Instance instance) {
         this.instance = instance;
@@ -55,9 +63,10 @@ public class InstanceWrapper implements SortableObject, Comparable{
 
         InstanceWrapper that = (InstanceWrapper) o;
 
-        // 相差5K以上认为是不同的对象
-        if (Math.abs(retainedHeapSize - that.retainedHeapSize) > 100) return false;
-        return classObj != null ? realEqual(classObj.getClassName(), that.classObj.getClassName()) : that.classObj == null;
+        if (!instanceExcluded.contains(that.instance.getClassObj().getClassName()) && realEqual(this.instance.getClassObj().getClassName(), that.instance.getClassObj().getClassName())) { // 同一个类型只需要一个，Bitmap除外
+            return true;
+        }
+        return this.instance.getClassObj() != null ? realEqual(this.instance.getClassObj().getClassName(), that.instance.getClassObj().getClassName()) : that.instance.getClassObj() == null;
     }
 
     @Override

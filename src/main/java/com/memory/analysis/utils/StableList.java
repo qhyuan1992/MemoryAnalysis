@@ -12,9 +12,22 @@ public class StableList<E> extends TreeSet<E>{
 
     @Override
     public boolean add(E e) {
-        if (size() >= MAX_NUM) {
-            pollLast();
+        if (!contains(e)) {
+            if (size() >= MAX_NUM) {
+                pollLast();
+            }
+            return super.add(e);
         }
-        return super.add(e);
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        for (E e : this) {
+            if (e.equals(o)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
