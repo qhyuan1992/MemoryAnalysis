@@ -10,13 +10,13 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-06-04 10:04:12
+Date: 2018-07-04 21:25:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for activity_result_table
+-- Table structure for `activity_result_table`
 -- ----------------------------
 DROP TABLE IF EXISTS `activity_result_table`;
 CREATE TABLE `activity_result_table` (
@@ -31,3 +31,9 @@ CREATE TABLE `activity_result_table` (
   `gc_root` text COMMENT '泄漏对象的gc路径',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=387 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of activity_result_table
+-- ----------------------------
+INSERT INTO `activity_result_table` VALUES ('385', 'com.tencent.qgame.presentation.activity.MainActivity', '0x13bfebb0', '6', '0.00931549072265625', '0.001552581787109375', '0.001552581787109375', 'test2.hprof', 'GC ROOT thread android.os.HandlerThread.<Java Local> (named \'DFM Handler Thread #0\')\n |- master.flame.danmaku.controller.DrawHandler.mDanmakuView\n  |- master.flame.danmaku.ui.widget.DanmakuView.mContext\n   |- com.tencent.qgame.presentation.activity.MainActivity instance\n');
+INSERT INTO `activity_result_table` VALUES ('386', 'com.tencent.qgame.presentation.activity.VideoRoomActivity', '0x138a3660', '5', '0.0063323974609375', '0.0012664794921875', '0.0012664794921875', 'test2.hprof', 'GC ROOT thread java.util.TimerThread.<Java Local> (named \'Timer-13\')\n |- com.tencent.qgame.presentation.widget.video.controller.VideoBufferingView$3.this$0 (anonymous subclass of java.util.TimerTask)\n  |- com.tencent.qgame.presentation.widget.video.controller.VideoBufferingView.mContext\n   |- com.tencent.qgame.presentation.activity.VideoRoomActivity instance\n');
