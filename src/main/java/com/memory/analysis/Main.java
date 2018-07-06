@@ -24,8 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by weiersyuan on 2018/5/12.
@@ -41,17 +40,21 @@ public class Main {
     public static final String classOutFilePathPatten = "src/main/resources/%s/%s_class.txt";
     public static final String activityOutFilePathPatten = "src/main/resources/%s/%s_activity.txt";
     public static String dirPath = "src/main/files/";
-    // 处理HPROF文件超时(ms)
-    public static final int TIME_OUT = 20 * 1000;
+    // 处理HPROF文件超时(min)
+    public static final int TIME_OUT = 5;
 
-    private static ExecutorService fixedThreadPool;
+    private static ExecutorService mFixedThreadPool;
+    private static ExecutorService mSingleThreadPool;
     private static InstanceResultDao instanceResultMySqlDao;
     private static ClassResultDao classResultMySqlDao;
+
+    private static int sumHandleHprof = 0;
+    private static int successNum = 0;
 
 
     public static String generateFilepath(int type, String fileName) {
         String result = null;
-        switch(type) {
+        switch (type) {
             case TYPE_ACTIVITY:
                 result = String.format(activityOutFilePathPatten, fileName, fileName);
                 break;
@@ -68,11 +71,13 @@ public class Main {
     public static String getFileName(File file) {
         return file.getName().substring(0, file.getName().lastIndexOf("."));
     }
+
     public static void main(String[] args) throws IOException {
         IFactory iFactory = new MySqlFactory();
         instanceResultMySqlDao = iFactory.createInstanceResultDao();
         classResultMySqlDao = iFactory.createClassResultDao();
-        fixedThreadPool = Executors.newFixedThreadPool(10);
+        mSingleThreadPool = Executors.newSingleThreadExecutor();
+        long startTime = System.currentTimeMillis();
         /**
          * 遍历当前目录下的所有hprof文件
          */
@@ -80,11 +85,76 @@ public class Main {
         File[] arrayFiles = dirFiles.listFiles();
         for (int i = 0; i < arrayFiles.length; i++) {
             if (arrayFiles[i].isFile() && arrayFiles[i].getName().endsWith("hprof")) {
+                sumHandleHprof++;
                 File hprofFile = new File(dirPath + arrayFiles[i].getName());
-                fixedThreadPool.execute(new InstanceRunnable(hprofFile, generateFilepath(TYPE_INSTANCE, getFileName(hprofFile)), generateFilepath(TYPE_ACTIVITY, getFileName(hprofFile))));
-                fixedThreadPool.execute(new ClassRunnable(hprofFile, generateFilepath(TYPE_CLASS, getFileName(hprofFile))));
+
+                Callable<Integer> instanceCallable = new InstanceCallable(hprofFile, generateFilepath(TYPE_INSTANCE, getFileName(hprofFile)), generateFilepath(TYPE_ACTIVITY, getFileName(hprofFile)), instanceResultMySqlDao);
+                FutureTask<Integer> futureTask = new FutureTask<>(instanceCallable);
+                int instanceHandleResult = handleHprofFile(TIME_OUT, futureTask, hprofFile, 1);
+                if (instanceHandleResult != Constant.PROCESS_RESULT_OK) {
+                    // todo 记录处理失败的hprof文件
+
+                }
+
+                Callable<Integer> classCallable = new ClassCallable(hprofFile, generateFilepath(TYPE_CLASS, getFileName(hprofFile)), classResultMySqlDao);
+                futureTask = new FutureTask<>(classCallable);
+                int classHandleResult = handleHprofFile(TIME_OUT, futureTask, hprofFile, 1);
+                if (classHandleResult != Constant.PROCESS_RESULT_OK) {
+                    // todo 记录处理失败的hprof文件
+
+                }
+
+                if (instanceHandleResult == Constant.PROCESS_RESULT_OK && classHandleResult == Constant.PROCESS_RESULT_OK) {
+                    successNum++;
+                }
             }
         }
+
+        mSingleThreadPool.shutdown();
+        long endTime = System.currentTimeMillis();
+        System.out.println("处理结束，总共处理了" + sumHandleHprof + "份hprof文件，成功" + successNum + "次，耗时" + (endTime - startTime) / 1000 + " s");
+
+    }
+
+    /**
+     *
+     * @param timeout
+     * @param futureTask
+     * @param hprofFile
+     * @param time
+     * @return
+     */
+    private static int handleHprofFile(int timeout, FutureTask<Integer> futureTask, File hprofFile, int time) {
+        if (time > 2) {
+            return Constant.PROCESS_RESULT_FAIL;
+        }
+        mSingleThreadPool.execute(futureTask);
+        int processResult = Constant.PROCESS_RESULT_DEFAULT;
+        try {
+            processResult = futureTask.get(timeout, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            futureTask.cancel(true);
+            processResult = Constant.PROCESS_RESULT_FAIL_INTERRRUPTED;
+            System.out.println("handle " + hprofFile.getName() + " " + time + " time interrupted!");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            futureTask.cancel(true);
+            processResult = Constant.PROCESS_RESULT_FAIL_EXECUTION;
+            System.out.println("handle " + hprofFile.getName() + " " + time + " time execute failed!");
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            futureTask.cancel(true);
+            processResult = Constant.PROCESS_RESULT_FAIL_TIMEOUT;
+            System.out.println("handle " + hprofFile.getName() + " " + time + " time Timeout!");
+            e.printStackTrace();
+        }
+        if (processResult == Constant.PROCESS_RESULT_OK) {
+            return processResult;
+        } else {
+            // 如果失败，迭代再处理一次，超时时间扩大一倍
+            processResult = handleHprofFile(TIME_OUT * (time + 1), futureTask, hprofFile, time + 1);
+        }
+        return processResult;
     }
 
     static class InstanceRunnable implements Runnable {
