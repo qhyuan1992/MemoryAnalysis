@@ -2,9 +2,11 @@ package com.memory.analysis;
 
 import com.memory.analysis.android.AndroidExcludedRefs;
 import com.memory.analysis.db.ClassResultDao;
+import com.memory.analysis.db.HandleResultDao;
 import com.memory.analysis.db.InstanceResultDao;
 import com.memory.analysis.db.factory.IFactory;
 import com.memory.analysis.db.factory.MySqlFactory;
+import com.memory.analysis.entity.HandleResultEntity;
 import com.memory.analysis.exclusion.ExcludedRefs;
 import com.memory.analysis.leak.HeapAnalyzer;
 import com.memory.analysis.process.ClassAnalysis;
@@ -35,7 +37,6 @@ public class Main {
     public static final int TYPE_CLASS = 1;
     public static final int TYPE_INSTANCE = 2;
 
-    public static final String hprofFilePath = "src/main/resources/test2.hprof";
     public static final String instanceOutFilePathPatten = "src/main/resources/%s/%s_instance.txt";
     public static final String classOutFilePathPatten = "src/main/resources/%s/%s_class.txt";
     public static final String activityOutFilePathPatten = "src/main/resources/%s/%s_activity.txt";
@@ -43,10 +44,10 @@ public class Main {
     // 处理HPROF文件超时(min)
     public static final int TIME_OUT = 5;
 
-    private static ExecutorService mFixedThreadPool;
     private static ExecutorService mSingleThreadPool;
     private static InstanceResultDao instanceResultMySqlDao;
     private static ClassResultDao classResultMySqlDao;
+    private static HandleResultDao mHandleResultDao;
 
     private static int sumHandleHprof = 0;
     private static int successNum = 0;
@@ -76,6 +77,12 @@ public class Main {
         IFactory iFactory = new MySqlFactory();
         instanceResultMySqlDao = iFactory.createInstanceResultDao();
         classResultMySqlDao = iFactory.createClassResultDao();
+
+        mHandleResultDao = iFactory.createHandleResultDao();
+        ConnectionUtil connectionUtil = new ConnectionUtil();
+        Connection connection = connectionUtil.getConnection();
+        mHandleResultDao.setConn(connection,Thread.currentThread().getId());
+
         mSingleThreadPool = Executors.newSingleThreadExecutor();
         long startTime = System.currentTimeMillis();
         /**
@@ -93,7 +100,6 @@ public class Main {
                 int instanceHandleResult = handleHprofFile(TIME_OUT, futureTask, hprofFile, 1);
                 if (instanceHandleResult != Constant.PROCESS_RESULT_OK) {
                     // todo 记录处理失败的hprof文件
-
                 }
 
                 Callable<Integer> classCallable = new ClassCallable(hprofFile, generateFilepath(TYPE_CLASS, getFileName(hprofFile)), classResultMySqlDao);
@@ -101,7 +107,6 @@ public class Main {
                 int classHandleResult = handleHprofFile(TIME_OUT, futureTask, hprofFile, 1);
                 if (classHandleResult != Constant.PROCESS_RESULT_OK) {
                     // todo 记录处理失败的hprof文件
-
                 }
 
                 if (instanceHandleResult == Constant.PROCESS_RESULT_OK && classHandleResult == Constant.PROCESS_RESULT_OK) {

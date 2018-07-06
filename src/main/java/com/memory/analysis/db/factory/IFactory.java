@@ -1,6 +1,7 @@
 package com.memory.analysis.db.factory;
 
 import com.memory.analysis.db.ClassResultDao;
+import com.memory.analysis.db.HandleResultDao;
 import com.memory.analysis.db.InstanceResultDao;
 
 /**
@@ -10,4 +11,5 @@ import com.memory.analysis.db.InstanceResultDao;
 public interface IFactory {
     InstanceResultDao createInstanceResultDao();
     ClassResultDao createClassResultDao();
+    HandleResultDao createHandleResultDao();
 }

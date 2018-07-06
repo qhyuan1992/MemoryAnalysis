@@ -1,9 +1,6 @@
 package com.memory.analysis.db.factory;
 
-import com.memory.analysis.db.ClassResultMySqlDao;
-import com.memory.analysis.db.ClassResultDao;
-import com.memory.analysis.db.InstanceResultDao;
-import com.memory.analysis.db.InstanceResultMySqlDao;
+import com.memory.analysis.db.*;
 
 /**
  * @author cainjiang
@@ -18,5 +15,10 @@ public class MySqlFactory implements IFactory {
     @Override
     public ClassResultDao createClassResultDao() {
         return new ClassResultMySqlDao();
+    }
+
+    @Override
+    public HandleResultDao createHandleResultDao() {
+        return new HandleResultMySqlDao();
     }
 }

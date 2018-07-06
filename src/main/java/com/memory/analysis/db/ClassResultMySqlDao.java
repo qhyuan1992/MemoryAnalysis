@@ -51,6 +51,8 @@ public class ClassResultMySqlDao extends ClassResultDao {
             } else {
                 System.out.println(className + " don't exist!");
             }
+            rs.close();
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
