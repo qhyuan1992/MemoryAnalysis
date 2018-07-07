@@ -26,3 +26,5 @@ hs_err_pid*
 .idea/codeStyles/
 .idea/libraries/Maven__mysql_mysql_connector_java_5_1_38.xml
 /MemoryAnalysis.iml
+/src/main/files/
+src/main/files/

@@ -1,10 +1,13 @@
 package com.memory.analysis.db;
 
+import com.memory.analysis.utils.Constants;
 import com.memory.analysis.entity.InstanceResultEntity;
 import com.memory.analysis.process.InstanceWrapper;
 import com.memory.analysis.utils.FormatUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author cainjiang
@@ -17,10 +20,9 @@ public class InstanceResultMySqlDao extends InstanceResultDao {
         synchronized (this) {
             InstanceResultEntity instanceResultEntity = query(instanceWrapper.classObj.getClassName());
             if (instanceResultEntity != null) {
-                update(instanceResultEntity, hprofFileName, instanceWrapper.retainedHeapSize / 1024.0 / 1024.0, instanceWrapper.leakTrace.toString());
+                update(instanceResultEntity, hprofFileName, instanceWrapper.retainedHeapSize, instanceWrapper.leakTrace.toString());
             } else {
-                add(instanceWrapper.classObj.getClassName(), FormatUtil.formatAddr(instanceWrapper.id), 1, instanceWrapper.retainedHeapSize / 1024.0 /
-                        1024.0, hprofFileName, instanceWrapper.leakTrace.toString());
+                add(instanceWrapper.classObj.getClassName(), FormatUtil.formatAddr(instanceWrapper.id), 1, instanceWrapper.retainedHeapSize, hprofFileName, instanceWrapper.leakTrace.toString());
             }
         }
     }
@@ -53,11 +55,50 @@ public class InstanceResultMySqlDao extends InstanceResultDao {
     }
 
     @Override
+    public List<InstanceResultEntity> queryResult(String sqlStr) {
+        List<InstanceResultEntity> resultList = new ArrayList<>();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlStr);
+            while (resultSet.next()) {
+                InstanceResultEntity instanceResultEntity = new InstanceResultEntity();
+                instanceResultEntity.objectName = resultSet.getString(Constants.INSTANCE_RESULT_TABLE_OBJECT_NAME);
+                instanceResultEntity.objectAddressID = resultSet.getString(Constants.INSTANCE_RESULT_TABLE_OBJECT_ADDRESS_ID);
+                instanceResultEntity.num = resultSet.getInt(Constants.INSTANCE_RESULT_TABLE_SUM_NUM);
+                instanceResultEntity.sumLeak = resultSet.getDouble(Constants.INSTANCE_RESULT_TABLE_SUM_LEAK);
+                instanceResultEntity.aveLeak = resultSet.getDouble(Constants.INSTANCE_RESULT_TABLE_AVE_LEAK);
+                instanceResultEntity.maxLeak = resultSet.getDouble(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK);
+                instanceResultEntity.maxLeakFileName = resultSet.getString(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK_FILE_NAME);
+                instanceResultEntity.gcRoot = resultSet.getString(Constants.INSTANCE_RESULT_TABLE_GC_ROOT);
+                resultList.add(instanceResultEntity);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
+    @Override
     public void add(String objectStr, String objectAddressID, int num, double currentLeak, String maxLeakFileName, String gcRoot) {
         //预编译SQL，减少sql执行
         PreparedStatement ptmt = null;
-        StringBuilder addSql = new StringBuilder("INSERT INTO ").append(getTableName()).append(" (object_name, object_address_id, sum_num, " +
-                "sum_leak, " + "ave_leak, max_leak, " + "max_leak_file_name, gc_root) ").append("VALUES (?,?,?,?,?,?,?,?)");
+//        StringBuilder addSql = new StringBuilder("INSERT INTO ").append(getTableName()).append(" (object_name, object_address_id, sum_num, " +
+//                "sum_leak, " + "ave_leak, max_leak, " + "max_leak_file_name, gc_root) ").append("VALUES (?,?,?,?,?,?,?,?)");
+        StringBuilder addSql = new StringBuilder("INSERT INTO").append(getTableName()).
+                append(" (").
+                append(Constants.INSTANCE_RESULT_TABLE_OBJECT_NAME + ", ").
+                append(Constants.INSTANCE_RESULT_TABLE_OBJECT_ADDRESS_ID + ", ").
+                append(Constants.INSTANCE_RESULT_TABLE_SUM_NUM+", ").
+                append(Constants.INSTANCE_RESULT_TABLE_SUM_LEAK + ", ").
+                append(Constants.INSTANCE_RESULT_TABLE_AVE_LEAK + ", ").
+                append(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK +", ").
+                append(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK_FILE_NAME + ", ").
+                append(Constants.INSTANCE_RESULT_TABLE_GC_ROOT).
+                append(") ").
+                append("VALUES (?,?,?,?,?,?,?,?)");
+
         try {
             ptmt = conn.prepareStatement(addSql.toString());
             ptmt.setString(1, objectStr);
@@ -78,7 +119,7 @@ public class InstanceResultMySqlDao extends InstanceResultDao {
 
     @Override
     public void update(InstanceResultEntity memoryLeakEntity, String hprofFileName, double currentLeak, String gcRoot) {
-//预编译SQL，减少sql执行
+        //预编译SQL，减少sql执行
         PreparedStatement ptmt = null;
         StringBuilder updateSql = new StringBuilder("UPDATE ").append(getTableName()).append(" SET ").append("sum_num = ?, sum_leak = ?, ave_leak =" +
                 " ?, " + "max_leak = ?, max_leak_file_name = ?, gc_root = ? ").append("WHERE object_name = ?");

@@ -5,6 +5,7 @@ import com.memory.analysis.process.InstanceWrapper;
 
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author cainjiang
@@ -37,6 +38,8 @@ public abstract class InstanceResultDao {
     public abstract void handle(InstanceWrapper instanceWrapper, String hprofFileName);
 
     public abstract InstanceResultEntity query(String objectStr);
+
+    public abstract List<InstanceResultEntity> queryResult(String sqlStr);
 
     public abstract void add(String objectStr, String objectAddressID, int num, double currentLeak, String maxLeakFileName, String gcRoot);
 

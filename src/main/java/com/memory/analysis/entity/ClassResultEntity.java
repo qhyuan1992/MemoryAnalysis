@@ -10,9 +10,13 @@ public class ClassResultEntity {
     public double aveNum;
     public double maxNum;
     public String maxNumFileName;
+    // 总共泄漏的内存数，单位字节数
     public double sumRetained;
+    // 平均泄漏的内存数，单位字节数
     public double aveRetained;
+    // 最大泄漏的内存数，单位字节数
     public double maxRetained;
+    // 最大泄漏文件名
     public String maxRetainedFileName;
 
     public ClassResultEntity() {

@@ -12,7 +12,7 @@ import java.util.List;
  * @author cainjiang
  * @date 2018/5/29
  */
-public abstract class HandleResultDao{
+public abstract class HandleResultDao<T>{
     public HashMap<Long, Connection> connectionHashMap = new HashMap<>();
     public Connection conn;
     public String tableName = "handle_result_table";
@@ -36,9 +36,9 @@ public abstract class HandleResultDao{
         this.tableName = tableName;
     }
 
-    protected abstract List<HandleResultEntity> query(String sqlStr);
+    public abstract List<T> query(String sqlStr);
 
-    protected abstract void add(HandleResultEntity handleResultEntity);
+    public abstract void add(T object);
 
-    protected abstract void update();
+    public abstract void update();
 }

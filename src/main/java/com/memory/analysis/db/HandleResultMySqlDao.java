@@ -13,10 +13,10 @@ import java.util.List;
  * @author cainjiang
  * @date 2018/7/6
  */
-public class HandleResultMySqlDao extends HandleResultDao{
+public class HandleResultMySqlDao extends HandleResultDao<HandleResultEntity>{
 
     @Override
-    protected List<HandleResultEntity> query(String sqlStr) {
+    public List<HandleResultEntity> query(String sqlStr) {
         List<HandleResultEntity> handleResultEntityList = new ArrayList<>();
         Statement statement;
         try {
@@ -38,7 +38,7 @@ public class HandleResultMySqlDao extends HandleResultDao{
     }
 
     @Override
-    protected void add(HandleResultEntity handleResultEntity) {
+    public void add(HandleResultEntity handleResultEntity) {
         PreparedStatement ptmt = null;
         StringBuilder addSql = new StringBuilder("INSERT INTO ").append(getTableName()).append(" (file_name, handle_type, status) ").append("VALUES(?,?,?)");
         try {
@@ -54,7 +54,7 @@ public class HandleResultMySqlDao extends HandleResultDao{
     }
 
     @Override
-    protected void update() {
+    public void update() {
 
     }
 }

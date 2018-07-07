@@ -1,5 +1,7 @@
 package com.memory.analysis.entity;
 
+import com.memory.analysis.utils.FormatUtil;
+
 /**
  * @author cainjiang
  * @date 2018/5/28
@@ -8,9 +10,13 @@ public class InstanceResultEntity {
     public String objectName;
     public String objectAddressID;
     public int num;
+    // 总共泄漏的内存数，单位字节数
     public double sumLeak;
+    // 平均泄漏的内存数，单位字节数
     public double aveLeak;
+    // 最大泄漏的内存数，单位字节数
     public double maxLeak;
+    // 最大泄漏文件名
     public String maxLeakFileName;
     public String gcRoot;
 
@@ -95,15 +101,17 @@ public class InstanceResultEntity {
 
     @Override
     public String toString() {
-        return "InstanceResultEntity{" +
-                "objectName='" + objectName + '\'' +
-                ", objectAddressID='" + objectAddressID + '\'' +
-                ", sumNum=" + num +
-                ", sumLeak=" + sumLeak +
-                ", aveLeak=" + aveLeak +
-                ", maxLeak=" + maxLeak +
-                ", maxLeakFileName='" + maxLeakFileName + '\'' +
-                ", gcRoot='" + gcRoot + '\'' +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append(maxLeakFileName).
+                append("\n").
+                append(objectName).
+                append(" reference ").
+                append(FormatUtil.formatByteSize((long) maxLeak)).
+                append(" ").
+                append(objectAddressID).
+                append("\n").
+                append(gcRoot).
+                append("\n");
+        return builder.toString();
     }
 }

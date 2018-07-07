@@ -1,5 +1,7 @@
 package com.memory.analysis.utils;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 public class FormatUtil {
@@ -41,5 +43,40 @@ public class FormatUtil {
 
     public static String formatAddr(long id) {
         return "0x" + Long.toHexString(id);
+    }
+
+    /**
+     * 保留小数点后n位
+     *
+     * @param n
+     * @param source
+     * @return
+     */
+    public static double formatDouble(int n, double source) {
+        BigDecimal bigDecimal = new BigDecimal(source);
+        double target = bigDecimal.setScale(n, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return target;
+    }
+
+    public static String generateFilepath(int type, String fileName) {
+        String result = null;
+        switch (type) {
+            case Constants.TYPE_ACTIVITY:
+                result = String.format(Constants.ACTIVITYOUTFILEPATHPATTEN, fileName, fileName);
+                break;
+            case Constants.TYPE_CLASS:
+                result = String.format(Constants.CLASSOUTFILEPATHPATTEN, fileName, fileName);
+                break;
+            case Constants.TYPE_INSTANCE:
+                result = String.format(Constants.INSTANCEOUTFILEPATHPATTEN, fileName, fileName);
+                break;
+            case Constants.TYPE_REPORT:
+                result = String.format(Constants.PARSERESULTOUTFILEPATHPATTEN,fileName);
+        }
+        return result;
+    }
+
+    public static String getFileName(File file) {
+        return file.getName().substring(0, file.getName().lastIndexOf("."));
     }
 }

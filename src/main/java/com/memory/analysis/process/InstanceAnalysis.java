@@ -1,8 +1,8 @@
 package com.memory.analysis.process;
 
+import com.memory.analysis.utils.Constants;
 import com.memory.analysis.leak.AnalysisResult;
 import com.memory.analysis.leak.HeapAnalyzer;
-import com.memory.analysis.utils.Constants;
 import com.memory.analysis.utils.StableList;
 import com.squareup.haha.perflib.ClassInstance;
 import com.squareup.haha.perflib.Instance;

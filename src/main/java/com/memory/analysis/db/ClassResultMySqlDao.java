@@ -2,6 +2,7 @@ package com.memory.analysis.db;
 
 import com.memory.analysis.entity.ClassResultEntity;
 import com.memory.analysis.process.ClassObjWrapper;
+import com.memory.analysis.utils.FormatUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,11 +20,9 @@ public class ClassResultMySqlDao extends ClassResultDao {
         synchronized (this) {
             ClassResultEntity classResultEntity = query(classObjWrapper.classObj.getClassName());
             if (classResultEntity != null) {
-                update(classResultEntity, hprofFileName, classObjWrapper.instanceCount, classObjWrapper.retainedHeapSize / 1024.0 /
-                        1024.0);
+                update(classResultEntity, hprofFileName, classObjWrapper.instanceCount, classObjWrapper.retainedHeapSize);
             } else {
-                add(classObjWrapper.classObj.getClassName(), classObjWrapper.instanceCount, classObjWrapper.retainedHeapSize /
-                        1024.0 / 1024.0, hprofFileName);
+                add(classObjWrapper.classObj.getClassName(), classObjWrapper.instanceCount, classObjWrapper.retainedHeapSize, hprofFileName);
             }
         }
     }
