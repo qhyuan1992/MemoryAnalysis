@@ -85,9 +85,7 @@ public class Main {
             StringBuilder sql = new StringBuilder("SELECT * FROM ").
                     append(Constants.INSTANCE_RESULT_TABLE).
                     append(" ORDER BY ").
-                    append("'").
                     append(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK).
-                    append("'").
                     append(" ").
                     append("LIMIT ").
                     append(Constants.TOP);
