@@ -89,7 +89,7 @@ public class Main {
                     append(" ").
                     append("LIMIT ").
                     append(Constants.TOP);
-            List<InstanceResultEntity> instanceResultEntityList = mInstanceResultMySqlDao.queryResult(sql.toString());
+            List<InstanceResultEntity> instanceResultEntityList = mInstanceResultMySqlDao.query(sql.toString());
             mInstanceResultMySqlDao.getConn(Thread.currentThread().getId()).close();
             if (!CheckerUtil.isEmpty(instanceResultEntityList)) {
                 System.out.println(instanceResultEntityList.toString());
@@ -168,128 +168,5 @@ public class Main {
         }
         return processResult;
     }
-
-//    static class InstanceRunnable implements Runnable {
-//        Snapshot snapshot;
-//        HeapAnalyzer heapAnalyzer;
-//        File file;
-//        String hprofFileName;
-//        File activityClassOutFile;
-//        HprofBuffer hprofBuffer;
-//        HprofParser hprofParser;
-//        File hprofFile;
-//
-//        InstanceRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String pathName, String hprofFileName, String activityClassOutFilePath) {
-//            this.snapshot = snapshot;
-//            this.heapAnalyzer = heapAnalyzer;
-//            this.file = new File(pathName);
-//            this.hprofFileName = hprofFileName;
-//            this.activityClassOutFile = new File(activityClassOutFilePath);
-//        }
-//
-//        InstanceRunnable(File hprofFile, String pathName, String activityClassOutFilePath) throws IOException {
-//            this.file = new File(pathName);
-//            this.activityClassOutFile = new File(activityClassOutFilePath);
-//            this.hprofFile = hprofFile;
-//            hprofBuffer = new MemoryMappedFileBuffer(hprofFile);
-//            hprofParser = new HprofParser(hprofBuffer);
-//        }
-//
-//        @Override
-//        public void run() {
-//            System.out.println("begin parse instance and activity in file " + hprofFile.getPath());
-//            long start = System.currentTimeMillis();
-//            Snapshot snapshot = hprofParser.parse();
-//            snapshot.computeDominators();
-//            ExcludedRefs refs = AndroidExcludedRefs.createAppDefaults().build();
-//            InstanceAnalysis instanceAnalysis = new InstanceAnalysis(snapshot, new HeapAnalyzer(refs));
-//            StableList<InstanceWrapper> topInstanceList = instanceAnalysis.getTopInstanceList();
-//            StableList<InstanceWrapper> topActivityClassList = instanceAnalysis.getTopActivityClassList();
-//            try {
-//                FileUtils.writeLines(file, topInstanceList, true);
-//
-//                ConnectionUtil connectionUtil = new ConnectionUtil();
-//                Connection connection = connectionUtil.getConnection();
-//                mInstanceResultMySqlDao.setConn(connection, Thread.currentThread().getId());
-//                mInstanceResultMySqlDao.setTableName("instance_result_table");
-//                for (InstanceWrapper instanceWrapper : topInstanceList) {
-//                    if (!CheckerUtil.isEmpty(instanceWrapper)) {
-//                        mInstanceResultMySqlDao.handle(instanceWrapper, hprofFile.getName());
-//                    }
-//                }
-//
-//                FileUtils.writeLines(activityClassOutFile, topActivityClassList, true);
-//
-//                mInstanceResultMySqlDao.setTableName("activity_result_table");
-//                for (InstanceWrapper instanceWrapper : topActivityClassList) {
-//                    if (!CheckerUtil.isEmpty(instanceWrapper)) {
-//                        mInstanceResultMySqlDao.handle(instanceWrapper, hprofFile.getName());
-//                    }
-//                }
-//
-//                mInstanceResultMySqlDao.getConn(Thread.currentThread().getId()).close();
-//                System.out.println("finish parse instance and activity in file" + hprofFile.getPath() + " in " + (System.currentTimeMillis() - start) + "ms");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//
-//    }
-
-//    static class ClassRunnable implements Runnable {
-//        Snapshot snapshot;
-//        HeapAnalyzer heapAnalyzer;
-//        File file;
-//        String hprofFileName;
-//        HprofBuffer hprofBuffer;
-//        HprofParser hprofParser;
-//        File hprofFile;
-//
-//        ClassRunnable(Snapshot snapshot, HeapAnalyzer heapAnalyzer, String classOutFilePath, String hprofFileName) {
-//            this.snapshot = snapshot;
-//            this.heapAnalyzer = heapAnalyzer;
-//            this.file = new File(classOutFilePath);
-//            this.hprofFileName = hprofFileName;
-//        }
-//
-//        ClassRunnable(File hprofFile, String classOutFilePath) throws IOException {
-//            this.file = new File(classOutFilePath);
-//            this.hprofFile = hprofFile;
-//            hprofBuffer = new MemoryMappedFileBuffer(hprofFile);
-//            hprofParser = new HprofParser(hprofBuffer);
-//        }
-//
-//        @Override
-//        public void run() {
-//            System.out.println("begin parse class in file " + hprofFile.getPath());
-//            long start = System.currentTimeMillis();
-//            Snapshot snapshot = hprofParser.parse();
-//            snapshot.computeDominators();
-//            ExcludedRefs refs = AndroidExcludedRefs.createAppDefaults().build();
-//            ClassAnalysis classAnalysis = new ClassAnalysis(snapshot, new HeapAnalyzer(refs));
-//            StableList<ClassObjWrapper> topClassList = classAnalysis.getTopInstanceList();
-//            try {
-//                FileUtils.writeLines(file, topClassList);
-//
-//                ConnectionUtil connectionUtil = new ConnectionUtil();
-//                Connection connection = connectionUtil.getConnection();
-//                classResultMySqlDao.setConn(connection, Thread.currentThread().getId());
-//                classResultMySqlDao.setTableName("class_result_table");
-//                for (ClassObjWrapper classObjectWrapper : topClassList) {
-//                    classResultMySqlDao.handle(classObjectWrapper, hprofFile.getName());
-//                }
-//                classResultMySqlDao.getConn(Thread.currentThread().getId()).close();
-//                System.out.println("finish parse class in file " + hprofFile.getPath() + " in " + (System.currentTimeMillis() - start) + "ms");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//    }
 
 }

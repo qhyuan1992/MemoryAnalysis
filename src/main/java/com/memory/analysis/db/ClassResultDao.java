@@ -1,19 +1,20 @@
 package com.memory.analysis.db;
 
-import com.memory.analysis.entity.ClassResultEntity;
 import com.memory.analysis.process.ClassObjWrapper;
+import com.memory.analysis.utils.Constants;
 
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author cainjiang
  * @date 2018/6/3
  */
-public abstract class ClassResultDao {
+public abstract class ClassResultDao<T> {
     public HashMap<Long,Connection> connectionHashMap= new HashMap<>();
     public Connection conn;
-    public String tableName = "class_result_table";
+    public String tableName = Constants.CLASS_RESULT_TABLE;
 
     public void setConn(Connection conn,long threadId) {
         this.conn = conn;
@@ -36,9 +37,9 @@ public abstract class ClassResultDao {
 
     public abstract void handle(ClassObjWrapper classObjWrapper, String hprofFileName);
 
-    public abstract ClassResultEntity query(String className);
+    public abstract List<T> query(String sqlStr);
 
     public abstract void add(String objectStr, double currentNum, double currentRetained, String hprofFileName);
 
-    public abstract void update(ClassResultEntity classResultEntity, String hprofFileName, double currentNum, double currentRetained);
+    public abstract void update(T object, String hprofFileName, double currentNum, double currentRetained);
 }

@@ -1,10 +1,8 @@
 package com.memory.analysis.db;
 
-import com.memory.analysis.entity.ClassResultEntity;
-import com.memory.analysis.entity.HandleResultEntity;
+import com.memory.analysis.utils.Constants;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
 public abstract class HandleResultDao<T>{
     public HashMap<Long, Connection> connectionHashMap = new HashMap<>();
     public Connection conn;
-    public String tableName = "handle_result_table";
+    public String tableName = Constants.HANDLE_RESULT_TABLE;
 
     public void setConn(Connection conn, long threadId) {
         this.conn = conn;
