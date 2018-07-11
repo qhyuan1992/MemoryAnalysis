@@ -69,7 +69,7 @@ public class Constants {
 
     public static String DIRPATH = "src/main/files/";
     // 处理HPROF文件超时(min)
-    public static final int TIME_OUT = 5;
+    public static final int TIME_OUT = 8;
     public static final int TOP = 3;
 
     public static final String ANDROID_BACTIVITY_CLASS = "Activity";

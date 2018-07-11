@@ -58,16 +58,14 @@ public class Main {
                     File hprofFile = new File(Constants.DIRPATH + arrayFiles[i].getName());
 
                     Callable<Integer> instanceCallable = new InstanceCallable(hprofFile, FormatUtil.generateFilepath(Constants.TYPE_INSTANCE, FormatUtil.getFileName(hprofFile)), FormatUtil.generateFilepath(Constants.TYPE_ACTIVITY, FormatUtil.getFileName(hprofFile)), factory);
-                    FutureTask<Integer> futureTask = new FutureTask<>(instanceCallable);
-                    int instanceHandleResult = handleHprofFile(Constants.TIME_OUT, futureTask, hprofFile, 1);
+                    int instanceHandleResult = handleHprofFile(Constants.TIME_OUT, instanceCallable, hprofFile, 1);
                     if (instanceHandleResult != Constants.PROCESS_RESULT_OK) {
                         // 将没有成功处理的结果记录下来
                         mHandleResultDao.add(new HandleResultEntity(hprofFile.getName(), Constants.HANDLE_TYPE_INSTANCE, Constants.HANDLE_STATUS_FAIL));
                     }
 
                     Callable<Integer> classCallable = new ClassCallable(hprofFile, FormatUtil.generateFilepath(Constants.TYPE_CLASS, FormatUtil.getFileName(hprofFile)), factory);
-                    futureTask = new FutureTask<>(classCallable);
-                    int classHandleResult = handleHprofFile(Constants.TIME_OUT, futureTask, hprofFile, 1);
+                    int classHandleResult = handleHprofFile(Constants.TIME_OUT, classCallable, hprofFile, 1);
                     if (classHandleResult != Constants.PROCESS_RESULT_OK) {
                         // 将没有成功处理的结果记录下来
                         mHandleResultDao.add(new HandleResultEntity(hprofFile.getName(), Constants.HANDLE_TYPE_CLASS, Constants.HANDLE_STATUS_FAIL));
@@ -125,20 +123,15 @@ public class Main {
 
     }
 
-    /**
-     * @param timeout
-     * @param futureTask
-     * @param hprofFile
-     * @param time
-     * @return
-     */
-    private static int handleHprofFile(int timeout, FutureTask<Integer> futureTask, File hprofFile, int time) {
+    private static int handleHprofFile(int timeout, Callable<Integer> callable, File hprofFile, int time) {
         if (time > 2) {
             return Constants.PROCESS_RESULT_FAIL;
         }
+        FutureTask<Integer> futureTask = new FutureTask<>(callable);
         mSingleThreadPool.execute(futureTask);
         int processResult = Constants.PROCESS_RESULT_DEFAULT;
         try {
+            System.out.println("begin to handle " + hprofFile.getName() + " " + time + " time whith timeout " + timeout + " min.");
             processResult = futureTask.get(timeout, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             // 没有处理成功，先关闭任务
@@ -160,11 +153,12 @@ public class Main {
             e.printStackTrace();
         }
         if (processResult == Constants.PROCESS_RESULT_OK) {
+            System.out.println("success handle " + hprofFile.getName());
             futureTask.cancel(true);
             return processResult;
         } else {
             // 如果失败，迭代再处理一次，超时时间扩大一倍
-            processResult = handleHprofFile(Constants.TIME_OUT * (time + 1), futureTask, hprofFile, time + 1);
+            processResult = handleHprofFile(Constants.TIME_OUT * (time + 1), callable, hprofFile, time + 1);
         }
         return processResult;
     }
