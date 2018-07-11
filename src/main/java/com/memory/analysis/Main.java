@@ -84,8 +84,8 @@ public class Main {
                     append(Constants.INSTANCE_RESULT_TABLE).
                     append(" ORDER BY ").
                     append(Constants.INSTANCE_RESULT_TABLE_MAX_LEAK).
-                    append(" ").
-                    append("LIMIT ").
+                    append(" DESC").
+                    append(" LIMIT ").
                     append(Constants.TOP);
             List<InstanceResultEntity> instanceResultEntityList = mInstanceResultMySqlDao.query(sql.toString());
             mInstanceResultMySqlDao.getConn(Thread.currentThread().getId()).close();
